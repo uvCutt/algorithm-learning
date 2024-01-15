@@ -23,9 +23,9 @@ public class SortAlgorithm {
     private static final int[] help = new int[MAX_N];
 
     public static void main(String[] args) {
-        int[] arr = {1, 3, 5, 7, 9, 8, 6, 4, 2};
+        int[] arr = {1, 3, 5, 7, 9, 8, 6, 4, 2, 1};
         Utils.printArray(arr);
-        randomQuickSort(arr, 0, arr.length - 1);
+        randomQuickSortImprove(arr, 0, arr.length - 1);
         Utils.printArray(arr);
     }
 
@@ -116,6 +116,7 @@ public class SortAlgorithm {
      * 注意 index 从 left 开始
      * */
     public static void merge(int[] arr, int left, int mid, int right) {
+
         int index = left;
         int l = left, r = mid + 1;
         while (l <= mid && r <= right) {
@@ -158,4 +159,31 @@ public class SortAlgorithm {
         Utils.swap(arr, partIndex, --slow);
         return slow;
     }
+
+    public static void randomQuickSortImprove(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int partVal = arr[left + (int) (Math.random() * (right - left + 1))];
+        int[] partIndexes = partitionIndexes(arr, left, right, partVal);
+        randomQuickSortImprove(arr, left, partIndexes[0] - 1);
+        randomQuickSortImprove(arr, partIndexes[1] + 1, right);
+
+    }
+
+    public static int[] partitionIndexes(int[] arr, int left, int right, int partVal) {
+        int l = left, r = right;
+        for (int i = l; i <= r; ) {
+            if (arr[i] < partVal) {
+                Utils.swap(arr, i++, l++);
+            } else if (arr[i] > partVal) {
+                Utils.swap(arr, r--, i);
+            } else {
+                i++;
+            }
+        }
+        return new int[]{l, r};
+    }
+
+
 }
